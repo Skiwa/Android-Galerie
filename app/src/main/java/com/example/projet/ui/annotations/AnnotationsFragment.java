@@ -5,16 +5,20 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.example.projet.ChooseEventActivity;
 import com.example.projet.MainActivity;
 import com.example.projet.R;
 import com.example.projet.ui.ContactListAdapter;
@@ -28,6 +32,7 @@ public class AnnotationsFragment extends Fragment {
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_CHOOSE_CONTACT = 2;
+    private static int RESULT_CHOOSE_EVENT = 3;
 
     private AnnotationsViewModel annotationsViewModel;
     private ImageView selectedImagePreview;
@@ -37,6 +42,7 @@ public class AnnotationsFragment extends Fragment {
     private ListView contactsListView;
     private Button buttonChooseImg;
     private Button buttonChooseContacts;
+    private Button buttonChooseEvent;
 
     /**
      * Création de la vue du fragment
@@ -55,9 +61,20 @@ public class AnnotationsFragment extends Fragment {
         contactsListView = root.findViewById(R.id.selected_contacts);
         buttonChooseImg = root.findViewById(R.id.choose_img);
         buttonChooseContacts = root.findViewById(R.id.choose_contacts);
+        buttonChooseEvent = root.findViewById(R.id.choose_event);
 
         //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie
         selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
+
+        //Séléctionner un event
+        buttonChooseEvent.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v){
+                Intent intent = new Intent( getActivity(), ChooseEventActivity.class);
+                startActivityForResult(intent, RESULT_CHOOSE_EVENT);
+            }
+        });
+
 
         //Selectionner une image
         buttonChooseImg.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +137,15 @@ public class AnnotationsFragment extends Fragment {
             //Met à jour graphiquement la liste des contacts
             this.updateSelectedContacts();
         }
+
+        //Selection d'un event
+        if (requestCode == RESULT_CHOOSE_EVENT && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri uriEvent = data.getData();
+            String test = data.getDataString();
+
+            Log.i("DEBUG","Récupération des infos dans l'uri"+test);
+        }
+
     }
 
     //TODO: isoler ça dans une classe

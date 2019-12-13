@@ -50,13 +50,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selected_contacts" />
 
+    <Button
+        android:id="@+id/choose_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Choisir un évènement"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_contacts" />
+
     <ListView
         android:id="@+id/selected_contacts"
         android:layout_width="329dp"
         android:layout_height="196dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_contacts" />
+        app:layout_constraintTop_toBottomOf="@+id/choose_event">
+
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
