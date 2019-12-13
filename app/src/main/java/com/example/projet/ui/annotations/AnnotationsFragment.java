@@ -2,6 +2,7 @@ package com.example.projet.ui.annotations;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.projet.MainActivity;
 import com.example.projet.R;
 import com.example.projet.ui.ContactListAdapter;
+import com.example.projet.ui.RemoveContactListener;
 
 import java.util.ArrayList;
 
@@ -32,14 +35,27 @@ public class AnnotationsFragment extends Fragment {
     private AnnotationsViewModel annotationsViewModel;
     private ImageView selectedImagePreview;
     private ArrayList<Uri> contacts = new ArrayList<>();
+    private ArrayList<String> contactsNames = new ArrayList<>();
+    private ContactListAdapter contactsListAdapter;
+    private ListView contactsListView;
 
+    /**
+     * Création de la vue du fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+        //Crée la vue
         annotationsViewModel = ViewModelProviders.of(this).get(AnnotationsViewModel.class);
         View root = inflater.inflate(R.layout.annotations, container, false);
 
+        //Récupère les élements
         selectedImagePreview = root.findViewById(R.id.selectedImagePreview);
+        contactsListView = root.findViewById(R.id.selectedContacts);
 
-        //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la gallerie
+        //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie
         selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
 
         //Selectionner une image
@@ -63,23 +79,44 @@ public class AnnotationsFragment extends Fragment {
                 startActivityForResult(iPickContact, RESULT_CHOOSE_CONTACT);
             }
         });
+
+        //Listing des contacts
+        contactsListAdapter = new ContactListAdapter(new ArrayList<String>(),getActivity());
+        contactsListView.setAdapter(contactsListAdapter);
+
+        //Evenement lors de la suppression d'un contact
+        contactsListAdapter.addRemoveContactListener(new RemoveContactListener() {
+            @Override
+            public void deleteContact(int position) {
+                //Supprime le contact de la liste
+                contacts.remove(position);
+            }
+        });
         return root;
     }
 
+    /**
+     * Traitement des intents
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Selection d'une image depuis l'intent
+        //Selection d'une image
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            //Fixe l'image avec l'uri récupérée
             selectedImagePreview.setImageURI(data.getData());
         }
 
-        //Selection d'un contact depuis l'intent
+        //Selection d'un contact
         if (requestCode == RESULT_CHOOSE_CONTACT && resultCode == RESULT_OK && null != data) {
+            //Ajoute le contact recupéré à la liste
             contacts.add(data.getData());
 
-            //Met à jour la liste des contacts
+            //Met à jour graphiquement la liste des contacts
             this.updateSelectedContacts();
         }
     }
@@ -101,22 +138,18 @@ public class AnnotationsFragment extends Fragment {
     }
 
 
+    /**
+     * Mise à jour des contacts selectionnés
+     */
     private void updateSelectedContacts(){
-        //Mise à jour de la liste des contacts selectionnés
-
-
-
         //-Transforme les contacts en string
-        ArrayList<String> contactsNames = new ArrayList<>();
+        this.contactsNames.clear();
         for(int i = 0; i<this.contacts.size(); i++){
-            contactsNames.add(getContactDisplayName(contacts.get(i)));
+            this.contactsNames.add(getContactDisplayName(contacts.get(i)));
         }
 
-        //-Crée l'adapter
-        ContactListAdapter adapter = new ContactListAdapter(contactsNames, getActivity());
-
-        //-Assigne la vue et l'adapter
-        ListView lView = (ListView)getActivity().findViewById(R.id.selectedContacts);
-        lView.setAdapter(adapter);
+        //-Met à jour la liste
+        contactsListAdapter.setList(contactsNames);
+        contactsListAdapter.notifyDataSetChanged();
     }
 }
