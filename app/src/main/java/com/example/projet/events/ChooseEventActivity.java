@@ -1,4 +1,4 @@
-package com.example.projet;
+package com.example.projet.events;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,6 +23,8 @@ import androidx.recyclerview.selection.StableIdKeyProvider;
 import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.projet.R;
 
 public class ChooseEventActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnItemActivatedListener<Long> {
 

@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.projet.R;
-import com.example.projet.ui.ContactListAdapter;
-import com.example.projet.ui.RemoveContactListener;
+import com.example.projet.contacts.ContactListAdapter;
+import com.example.projet.contacts.RemoveContactListener;
 
 import java.util.ArrayList;
 

@@ -12,17 +12,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.projet.ChooseEventActivity;
 import com.example.projet.MainActivity;
 import com.example.projet.R;
-import com.example.projet.ui.ContactListAdapter;
-import com.example.projet.ui.RemoveContactListener;
+import com.example.projet.contacts.ContactListAdapter;
+import com.example.projet.contacts.RemoveContactListener;
+import com.example.projet.events.ChooseEventActivity;
 
 import java.util.ArrayList;
 

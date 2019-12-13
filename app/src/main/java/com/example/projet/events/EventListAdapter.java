@@ -1,4 +1,4 @@
-package com.example.projet;
+package com.example.projet.events;
 
 import android.Manifest;
 import android.content.Context;
@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.projet.R;
 
 import java.util.Calendar;
 import java.util.List;
