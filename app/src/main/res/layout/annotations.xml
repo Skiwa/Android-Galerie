@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/selectedImagePreview"
+        android:id="@+id/selected_image_preview"
         android:layout_width="178dp"
         android:layout_height="158dp"
         android:layout_marginTop="16dp"
@@ -26,10 +26,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectedImagePreview" />
+        app:layout_constraintTop_toBottomOf="@+id/selected_image_preview" />
 
     <Button
-        android:id="@+id/choose_contact"
+        android:id="@+id/choose_contacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/choose_img" />
 
     <Button
-        android:id="@+id/saveAnnotation"
+        android:id="@+id/save_annotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -48,15 +48,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectedContacts" />
+        app:layout_constraintTop_toBottomOf="@+id/selected_contacts" />
 
     <ListView
-        android:id="@+id/selectedContacts"
+        android:id="@+id/selected_contacts"
         android:layout_width="329dp"
         android:layout_height="196dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_contact" />
+        app:layout_constraintTop_toBottomOf="@+id/choose_contacts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

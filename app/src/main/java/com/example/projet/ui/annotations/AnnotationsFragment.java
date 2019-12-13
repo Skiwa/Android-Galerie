@@ -2,15 +2,12 @@ package com.example.projet.ui.annotations;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +35,8 @@ public class AnnotationsFragment extends Fragment {
     private ArrayList<String> contactsNames = new ArrayList<>();
     private ContactListAdapter contactsListAdapter;
     private ListView contactsListView;
+    private Button buttonChooseImg;
+    private Button buttonChooseContacts;
 
     /**
      * Création de la vue du fragment
@@ -52,15 +51,16 @@ public class AnnotationsFragment extends Fragment {
         View root = inflater.inflate(R.layout.annotations, container, false);
 
         //Récupère les élements
-        selectedImagePreview = root.findViewById(R.id.selectedImagePreview);
-        contactsListView = root.findViewById(R.id.selectedContacts);
+        selectedImagePreview = root.findViewById(R.id.selected_image_preview);
+        contactsListView = root.findViewById(R.id.selected_contacts);
+        buttonChooseImg = root.findViewById(R.id.choose_img);
+        buttonChooseContacts = root.findViewById(R.id.choose_contacts);
 
         //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie
         selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
 
         //Selectionner une image
-        Button buttonChoose_img = root.findViewById(R.id.choose_img);
-        buttonChoose_img.setOnClickListener(new View.OnClickListener() {
+        buttonChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Intent iPickImage = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -70,8 +70,7 @@ public class AnnotationsFragment extends Fragment {
         });
 
         //Selectionner un contact
-        Button buttonChoose_contact = root.findViewById(R.id.choose_contact);
-        buttonChoose_contact.setOnClickListener(new View.OnClickListener() {
+        buttonChooseContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Intent iPickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
@@ -105,6 +104,8 @@ public class AnnotationsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //TODO: selection d'un event
+
         //Selection d'une image
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             //Fixe l'image avec l'uri récupérée
@@ -121,7 +122,7 @@ public class AnnotationsFragment extends Fragment {
         }
     }
 
-
+    //TODO: isoler ça dans une classe
     /**
      * Renvoie le nom d'un contact en fonction de son Uri
      * @param contactUri
@@ -137,7 +138,7 @@ public class AnnotationsFragment extends Fragment {
         return "";
     }
 
-
+    //TODO: isoler ça dans une classe
     /**
      * Mise à jour des contacts selectionnés
      */
