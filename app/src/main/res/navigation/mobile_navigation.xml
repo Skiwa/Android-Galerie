@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.projet.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/home" />
+
+    <fragment
+        android:id="@+id/annotations"
+        android:name="com.example.projet.ui.annotations.AnnotationsFragment"
+        android:label="@string/title_annotations"
+        tools:layout="@layout/annotations" />
+
+    <fragment
+        android:id="@+id/search"
+        android:name="com.example.projet.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/search" />
+</navigation>
