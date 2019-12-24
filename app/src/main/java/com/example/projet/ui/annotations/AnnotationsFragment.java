@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,7 @@ import com.example.projet.contacts.ContactListAdapter;
 import com.example.projet.contacts.RemoveContactListener;
 import com.example.projet.events.ChooseEventActivity;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +44,6 @@ public class AnnotationsFragment extends Fragment {
     private ImageView selectedImagePreview;
     private TextView selectedContactsLabel;
     private TextView selectedEventLabel;
-    private ArrayList<Uri> contacts = new ArrayList<>();
     private ArrayList<String> contactsNames = new ArrayList<>();
     private ContactListAdapter contactsListAdapter;
     private TextView selectedEvent;
@@ -50,10 +51,15 @@ public class AnnotationsFragment extends Fragment {
     private Button buttonChooseImg;
     private Button buttonChooseContacts;
     private Button buttonChooseEvent;
+    private Button buttonSave;
+
     private boolean hasSelectedImage = false;
     private boolean hasSelectedContacts = false;
     private boolean hasSelectedEvent = false;
 
+    private Uri imageURI;
+    private ArrayList<Uri> contacts = new ArrayList<>();
+    private Uri eventURI;
     /**
      * Création de la vue du fragment
      * @param inflater
@@ -70,11 +76,12 @@ public class AnnotationsFragment extends Fragment {
         selectedImagePreview = root.findViewById(R.id.selected_image_preview);
         selectedContactsLabel = root.findViewById(R.id.selected_contacts_label);
         contactsListView = root.findViewById(R.id.selected_contacts);
+        selectedEvent = root.findViewById(R.id.selected_event);
+        selectedEventLabel = root.findViewById(R.id.selected_event_label);
         buttonChooseImg = root.findViewById(R.id.choose_img);
         buttonChooseContacts = root.findViewById(R.id.choose_contacts);
         buttonChooseEvent = root.findViewById(R.id.choose_event);
-        selectedEvent = root.findViewById(R.id.selected_event);
-        selectedEventLabel = root.findViewById(R.id.selected_event_label);
+        buttonSave = root.findViewById(R.id.save_annotation);
 
         //Cache les élements qui doivent l'être
         selectedImagePreview.setVisibility(View.GONE);
@@ -91,6 +98,7 @@ public class AnnotationsFragment extends Fragment {
                 hasSelectedImage = true;
                 selectedImagePreview.setVisibility(View.VISIBLE);
             }
+            imageURI = ((MainActivity) getActivity()).getSelectedImageUri();
             selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
         }
 
@@ -121,6 +129,14 @@ public class AnnotationsFragment extends Fragment {
                 Intent iPickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                 iPickContact.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
                 startActivityForResult(iPickContact, RESULT_CHOOSE_CONTACT);
+            }
+        });
+
+        //Enregistrer une annotation
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                saveAnnotation(imageURI, eventURI, contacts);
             }
         });
 
@@ -158,6 +174,7 @@ public class AnnotationsFragment extends Fragment {
             }
 
             //Fixe l'image avec l'uri récupérée
+            imageURI = data.getData();
             selectedImagePreview.setImageURI(data.getData());
         }
 
@@ -188,11 +205,11 @@ public class AnnotationsFragment extends Fragment {
                 selectedEvent.setVisibility(View.VISIBLE);
             }
 
-            Uri uriEvent = data.getData();
+            eventURI = data.getData();
 
             //Récupère le titre et la date formatée
-            String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, uriEvent);
-            Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, uriEvent)));
+            String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, eventURI);
+            Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, eventURI)));
             String eventDate = _eventDate.toLocaleString().substring(0,_eventDate.toLocaleString().length()-9);
 
             selectedEvent.setText(eventTitle + " (" + eventDate+")");
@@ -200,7 +217,6 @@ public class AnnotationsFragment extends Fragment {
 
     }
 
-    //TODO: isoler ça dans une classe
     /**
      * Mise à jour des contacts selectionnés
      */
@@ -231,5 +247,38 @@ public class AnnotationsFragment extends Fragment {
             return cursor.getString(numberIndex);
         }
         return "";
+    }
+
+
+    //TODO :
+    // - Enregistrer en BD
+    // - Isoler dans une classe spéciale ?
+    /**
+     * Enregistre l'annotation en BDD
+     */
+    private void saveAnnotation(Uri image, Uri event, ArrayList<Uri> contacts){
+
+        //Si toutes les Uri sont là
+        if(image != null && event != null && contacts.size() != 0){
+
+            Log.i("DEBUG", "Image choisie : "+image.toString());
+            Log.i("DEBUG", "Event choisi : " +event.toString());
+            Log.i("DEBUG", "Contacts choisis : ");
+
+            for(int i = 0; i < contacts.size(); i++){
+                Log.i("DEBUG", contacts.get(i).toString());
+            }
+
+            //TODO ici: Enregistrement BD
+
+            Toast.makeText(this.getContext(),"Annotation enregistrée.", Toast.LENGTH_LONG).show();
+
+            //Redirige vers l'onglet d'accueil
+            ((MainActivity) this.getActivity()).navView.setSelectedItemId(R.id.home);
+
+        }else{
+            Toast.makeText(this.getContext(),"Veuillez selectionner une image, un évènement et au moins un contact pour enregistrer.", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
