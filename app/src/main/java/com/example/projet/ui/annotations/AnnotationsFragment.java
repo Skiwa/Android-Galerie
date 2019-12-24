@@ -175,26 +175,15 @@ public class AnnotationsFragment extends Fragment {
             }
 
             Uri uriEvent = data.getData();
-            String test = data.getDataString();
-            selectedEvent.setText(getEventTitle(uriEvent) + " (" + getEventDate(uriEvent)+")");
+
+            //Récupère le titre et la date formatée
+            String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, uriEvent);
+            Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, uriEvent)));
+            String eventDate = _eventDate.toLocaleString().substring(0,_eventDate.toLocaleString().length()-9);
+
+            selectedEvent.setText(eventTitle + " (" + eventDate+")");
         }
 
-    }
-
-    //TODO: isoler ça dans une classe
-    /**
-     * Renvoie le nom d'un contact en fonction de son Uri
-     * @param contactUri
-     * @return
-     */
-    private String getContactDisplayName(Uri contactUri){
-        String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
-        Cursor cursor = getActivity().getContentResolver().query(contactUri, projection,null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-            return cursor.getString(numberIndex);
-        }
-        return "";
     }
 
     //TODO: isoler ça dans une classe
@@ -205,7 +194,7 @@ public class AnnotationsFragment extends Fragment {
         //-Transforme les contacts en string
         this.contactsNames.clear();
         for(int i = 0; i<this.contacts.size(); i++){
-            this.contactsNames.add(getContactDisplayName(contacts.get(i)));
+            this.contactsNames.add(getFieldFromUri(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, contacts.get(i)));
         }
 
         //-Met à jour la liste
@@ -213,33 +202,19 @@ public class AnnotationsFragment extends Fragment {
         contactsListAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Renvoie le titre d'un event en fonction de son Uri
-     * @param eventUri
-     * @return
-     */
-    private String getEventTitle(Uri eventUri){
-        String[] projection = new String[]{CalendarContract.Events.TITLE};
-        Cursor cursor = getActivity().getContentResolver().query(eventUri, projection,null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int numberIndex = cursor.getColumnIndex(CalendarContract.Events.TITLE);
-            return cursor.getString(numberIndex);
-        }
-        return "";
-    }
 
     /**
-     * Renvoie la date d'un event en fonction de son Uri
+     * Récupère un champs voulu pour une URI
+     * @param field
      * @param eventUri
      * @return
      */
-    private String getEventDate(Uri eventUri){
-        String[] projection = new String[]{CalendarContract.Events.DTSTART};
+    private String getFieldFromUri(String field, Uri eventUri){
+        String[] projection = new String[]{field};
         Cursor cursor = getActivity().getContentResolver().query(eventUri, projection,null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
-            int numberIndex = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
-            Date datetime = new Date(Long.parseLong(cursor.getString(numberIndex)));
-            return datetime.toLocaleString().substring(0,datetime.toLocaleString().length()-9);
+            int numberIndex = cursor.getColumnIndex(field);
+            return cursor.getString(numberIndex);
         }
         return "";
     }
