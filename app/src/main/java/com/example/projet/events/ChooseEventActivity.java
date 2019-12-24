@@ -75,7 +75,7 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
         this.finish();
 
         //Test lors du clic sur un élement on renvoie l'URI
-        Toast.makeText(this,"event uri : "+ selectedEvent, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"event uri : "+ selectedEvent, Toast.LENGTH_LONG).show();
         return true;
     }
 
@@ -83,7 +83,7 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
     @Override
     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-        Toast.makeText(this.getApplicationContext(), "Date : "+dayOfMonth+"/"+(month+1)+"/"+year, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.getApplicationContext(), "Date : "+dayOfMonth+"/"+(month+1)+"/"+year, Toast.LENGTH_SHORT).show();
 
         checkCalendarReadPermission();
         if (readCalendarAuthorized) {

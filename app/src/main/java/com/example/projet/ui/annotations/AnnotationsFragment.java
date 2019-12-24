@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,7 +25,10 @@ import com.example.projet.contacts.ContactListAdapter;
 import com.example.projet.contacts.RemoveContactListener;
 import com.example.projet.events.ChooseEventActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,13 +40,18 @@ public class AnnotationsFragment extends Fragment {
 
     private AnnotationsViewModel annotationsViewModel;
     private ImageView selectedImagePreview;
+    private TextView selectedContactsLabel;
+    private TextView selectedEventLabel;
     private ArrayList<Uri> contacts = new ArrayList<>();
     private ArrayList<String> contactsNames = new ArrayList<>();
     private ContactListAdapter contactsListAdapter;
+    private TextView selectedEvent;
     private ListView contactsListView;
     private Button buttonChooseImg;
     private Button buttonChooseContacts;
     private Button buttonChooseEvent;
+    private boolean hasSelectedContacts = false;
+    private boolean hasSelectedEvent = false;
 
     /**
      * Création de la vue du fragment
@@ -57,10 +67,19 @@ public class AnnotationsFragment extends Fragment {
 
         //Récupère les élements
         selectedImagePreview = root.findViewById(R.id.selected_image_preview);
+        selectedContactsLabel = root.findViewById(R.id.selected_contacts_label);
         contactsListView = root.findViewById(R.id.selected_contacts);
         buttonChooseImg = root.findViewById(R.id.choose_img);
         buttonChooseContacts = root.findViewById(R.id.choose_contacts);
         buttonChooseEvent = root.findViewById(R.id.choose_event);
+        selectedEvent = root.findViewById(R.id.selected_event);
+        selectedEventLabel = root.findViewById(R.id.selected_event_label);
+
+        //Cache les élements qui doivent l'être
+        selectedEventLabel.setVisibility(View.GONE);
+        selectedEvent.setVisibility(View.GONE);
+        selectedContactsLabel.setVisibility(View.GONE);
+        contactsListView.setVisibility(View.GONE);
 
         //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie
         selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
@@ -130,6 +149,14 @@ public class AnnotationsFragment extends Fragment {
 
         //Selection d'un contact
         if (requestCode == RESULT_CHOOSE_CONTACT && resultCode == RESULT_OK && null != data) {
+
+            //Fait apparaitre les éléments
+            if(!hasSelectedContacts){
+                hasSelectedContacts = true;
+                selectedContactsLabel.setVisibility(View.VISIBLE);
+                contactsListView.setVisibility(View.VISIBLE);
+            }
+
             //Ajoute le contact recupéré à la liste
             contacts.add(data.getData());
 
@@ -139,10 +166,17 @@ public class AnnotationsFragment extends Fragment {
 
         //Selection d'un event
         if (requestCode == RESULT_CHOOSE_EVENT && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            //Fait apparaitre les éléments
+            if(!hasSelectedEvent){
+                hasSelectedEvent = true;
+                selectedEventLabel.setVisibility(View.VISIBLE);
+                selectedEvent.setVisibility(View.VISIBLE);
+            }
+
             Uri uriEvent = data.getData();
             String test = data.getDataString();
-
-            Log.i("DEBUG","Récupération des infos dans l'uri"+test);
+            selectedEvent.setText(getEventTitle(uriEvent) + " (" + getEventDate(uriEvent)+")");
         }
 
     }
@@ -177,5 +211,36 @@ public class AnnotationsFragment extends Fragment {
         //-Met à jour la liste
         contactsListAdapter.setList(contactsNames);
         contactsListAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Renvoie le titre d'un event en fonction de son Uri
+     * @param eventUri
+     * @return
+     */
+    private String getEventTitle(Uri eventUri){
+        String[] projection = new String[]{CalendarContract.Events.TITLE};
+        Cursor cursor = getActivity().getContentResolver().query(eventUri, projection,null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int numberIndex = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+            return cursor.getString(numberIndex);
+        }
+        return "";
+    }
+
+    /**
+     * Renvoie la date d'un event en fonction de son Uri
+     * @param eventUri
+     * @return
+     */
+    private String getEventDate(Uri eventUri){
+        String[] projection = new String[]{CalendarContract.Events.DTSTART};
+        Cursor cursor = getActivity().getContentResolver().query(eventUri, projection,null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int numberIndex = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+            Date datetime = new Date(Long.parseLong(cursor.getString(numberIndex)));
+            return datetime.toLocaleString().substring(0,datetime.toLocaleString().length()-9);
+        }
+        return "";
     }
 }

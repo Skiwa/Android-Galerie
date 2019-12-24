@@ -43,12 +43,11 @@
         android:id="@+id/save_annotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:text="Enregistrer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selected_contacts" />
+        app:layout_constraintTop_toBottomOf="@+id/selected_event_label" />
 
     <Button
         android:id="@+id/choose_event"
@@ -63,13 +62,46 @@
 
     <ListView
         android:id="@+id/selected_contacts"
-        android:layout_width="329dp"
-        android:layout_height="196dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="335dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_event">
+        app:layout_constraintTop_toBottomOf="@+id/selected_contacts_label">
 
     </ListView>
+
+    <TextView
+        android:id="@+id/selected_contacts_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:text="Contacts choisis :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_event" />
+
+    <TextView
+        android:id="@+id/selected_event_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:text="Evènement choisi :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selected_contacts" />
+
+    <TextView
+        android:id="@+id/selected_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/selected_event_label"
+        app:layout_constraintTop_toBottomOf="@+id/selected_contacts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
