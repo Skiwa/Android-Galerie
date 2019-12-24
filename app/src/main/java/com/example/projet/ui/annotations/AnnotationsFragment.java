@@ -139,8 +139,6 @@ public class AnnotationsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO: selection d'un event
-
         //Selection d'une image
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             //Fixe l'image avec l'uri récupérée
