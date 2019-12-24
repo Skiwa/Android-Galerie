@@ -50,6 +50,7 @@ public class AnnotationsFragment extends Fragment {
     private Button buttonChooseImg;
     private Button buttonChooseContacts;
     private Button buttonChooseEvent;
+    private boolean hasSelectedImage = false;
     private boolean hasSelectedContacts = false;
     private boolean hasSelectedEvent = false;
 
@@ -76,13 +77,22 @@ public class AnnotationsFragment extends Fragment {
         selectedEventLabel = root.findViewById(R.id.selected_event_label);
 
         //Cache les élements qui doivent l'être
+        selectedImagePreview.setVisibility(View.GONE);
         selectedEventLabel.setVisibility(View.GONE);
         selectedEvent.setVisibility(View.GONE);
         selectedContactsLabel.setVisibility(View.GONE);
         contactsListView.setVisibility(View.GONE);
 
         //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie
-        selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
+        if(((MainActivity) getActivity()).getSelectedImageUri() != null){
+
+            //Fait apparaitre les éléments
+            if(!hasSelectedImage){
+                hasSelectedImage = true;
+                selectedImagePreview.setVisibility(View.VISIBLE);
+            }
+            selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
+        }
 
         //Séléctionner un event
         buttonChooseEvent.setOnClickListener(new View.OnClickListener()
@@ -141,6 +151,12 @@ public class AnnotationsFragment extends Fragment {
 
         //Selection d'une image
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            //Fait apparaitre les éléments
+            if(!hasSelectedImage){
+                hasSelectedImage = true;
+                selectedImagePreview.setVisibility(View.VISIBLE);
+            }
+
             //Fixe l'image avec l'uri récupérée
             selectedImagePreview.setImageURI(data.getData());
         }
