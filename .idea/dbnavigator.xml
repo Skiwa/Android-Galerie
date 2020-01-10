@@ -27,12 +27,6 @@
       <connection connection-id="20890245-e49e-4da1-a405-5f81f0598e52">
         <schema name="main" object-types="table, view" />
       </connection>
-      <connection connection-id="59070840-56be-4e58-a13c-f63f644ad5e3">
-        <schema name="main" object-types="table, view" />
-      </connection>
-      <connection connection-id="f83f7dda-c395-41c0-a36e-9126477b3280">
-        <schema name="main" object-types="table, view" />
-      </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">

@@ -35,6 +35,7 @@ import com.example.projet.model.PicAnnotation;
 import com.example.projet.ui.ContactListAdapter;
 import com.example.projet.ui.RemoveContactListener;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,17 +111,37 @@ public class AnnotationsFragment extends Fragment {
 
                     AnnotationDatabase db = AnnotationDatabase.getDatabase(getActivity().getApplication());
                     PicAnnotationDao dao = db.getPicAnnotationDao();
+
+                    //A l'Event annotation on envoie l'URI de la photo et on retrouve l'URI stocké dans un textView
                     EventAnnotation annot = new EventAnnotation(
                         UriPic,
                         Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, (String) textSelectedEvent.getText())
                     );
                     dao.insertPictureEvent(annot);
-                    /*Log.i("DataBase", " Envoie d'une requête....il me semble");
-                    Log.i("DataBase", annot.toString());*/
+                    Log.i("DataBase", "On ajoute à la BDD : "+ annot.toString());
+
+                    //Au Contact annotation on envoie l'URI de la photo
+                    //Récupérer les éléments de **Contacts** et les enlever de son tableau
+                    for( int i=0; i<contacts.size(); i++) {
+                        try {
+                            ContactAnnotation ca = new ContactAnnotation(
+                            UriPic,
+                            contacts.get(i)
+                            );
+                            dao.insertPictureContact(ca);
+                            Log.i("DataBase", "On ajoute à la BDD : "+ ca.toString());
+
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
 
                     List<PicAnnotation> res = dao.loadAnnotations();
                     Log.v("DataBase", "coucou");
                     for (PicAnnotation a : res) {
+                        Log.i("", "Une nouvelle entrée dans la BDD");
                         Log.i("DataBase", a.toString());
                     }
                 });
@@ -201,12 +222,14 @@ public class AnnotationsFragment extends Fragment {
             selectedImagePreview.setImageURI(data.getData());
             Log.i("DEBUG","Récupération des infos de l'image: "+data.getData().getPathSegments().get(1));
             UriPic = data.getData();
+            Log.i("DEBUG","Récupération des infos dans l'uri de la photo : "+UriPic);
         }
 
         //Selection d'un contact
         if (requestCode == RESULT_CHOOSE_CONTACT && resultCode == RESULT_OK && null != data) {
             //Ajoute le contact recupéré à la liste
             contacts.add(data.getData());
+            Log.i("DEBUG","Récupération des infos de contacts lors de la sélection : "+contacts);
 
             //Met à jour graphiquement la liste des contacts
             this.updateSelectedContacts();
