@@ -125,8 +125,8 @@ public class AnnotationsFragment extends Fragment {
                     for( int i=0; i<contacts.size(); i++) {
                         try {
                             ContactAnnotation ca = new ContactAnnotation(
-                            UriPic,
-                            contacts.get(i)
+                                UriPic,
+                                contacts.get(i)
                             );
                             dao.insertPictureContact(ca);
                             Log.i("DataBase", "On ajoute à la BDD : "+ ca.toString());
@@ -147,26 +147,6 @@ public class AnnotationsFragment extends Fragment {
                 });
             }
         });
-        /*
-
-            ContactAnnotation ca = new ContactAnnotation(
-                Uri.withAppendedPath(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "1"),
-                Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI, "1")
-            );
-            dao.insertPictureContact(ca);
-            ca = new ContactAnnotation(
-                Uri.withAppendedPath(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "1"),
-                Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI, "2")
-            );
-            dao.insertPictureContact(ca);
-
-            List<PicAnnotation> res = dao.loadAnnotations();
-            Log.v("ANNOT", "coucou");
-            for (PicAnnotation a : res) {
-                Log.v("ANNOT", a.toString());
-            }
-
-        });*/
 
 
         //Selectionner une image
