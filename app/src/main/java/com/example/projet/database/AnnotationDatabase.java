@@ -15,7 +15,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.projet.model.*;
 
 //Pas oublier de modifier la version en cas de modification de la Db
-@Database(entities={EventAnnotation.class, ContactAnnotation.class}, version=1, exportSchema = false)
+@Database(entities={EventAnnotation.class, ContactAnnotation.class}, version=4, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AnnotationDatabase extends RoomDatabase {
 
@@ -35,6 +35,7 @@ public abstract class AnnotationDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         AnnotationDatabase.class, "annotation_database")
+                            .fallbackToDestructiveMigration()
                         .build();
                 }
             }

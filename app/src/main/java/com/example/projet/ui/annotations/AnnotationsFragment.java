@@ -153,7 +153,7 @@ public class AnnotationsFragment extends Fragment {
         buttonChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent iPickImage = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent iPickImage = new Intent(Intent.ACTION_OPEN_DOCUMENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(iPickImage, RESULT_LOAD_IMAGE);
             }
 
