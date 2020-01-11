@@ -37,21 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
     public Uri selectedImageUri;
     public TextView selected_event;
-
+    public BottomNavigationView navView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        /*button.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view) {
-                Uri event = converters.fromString(textViewEvent.getText().toString());
-                EventAnnotation annot = new EventAnnotation(selectedImageUri, event);
-                dao.insertPictureEvent(annot);
-            }
-        });*/
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

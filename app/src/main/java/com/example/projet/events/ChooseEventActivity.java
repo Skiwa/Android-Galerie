@@ -1,4 +1,4 @@
-package com.example.projet;
+package com.example.projet.events;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,6 +23,8 @@ import androidx.recyclerview.selection.StableIdKeyProvider;
 import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.projet.R;
 
 public class ChooseEventActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnItemActivatedListener<Long> {
 
@@ -73,7 +75,7 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
         this.finish();
 
         //Test lors du clic sur un élement on renvoie l'URI
-        Toast.makeText(this,"event uri : "+ selectedEvent, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"event uri : "+ selectedEvent, Toast.LENGTH_LONG).show();
         return true;
     }
 
@@ -81,7 +83,7 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
     @Override
     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-        Toast.makeText(this.getApplicationContext(), "Date : "+dayOfMonth+"/"+(month+1)+"/"+year, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.getApplicationContext(), "Date : "+dayOfMonth+"/"+(month+1)+"/"+year, Toast.LENGTH_SHORT).show();
 
         checkCalendarReadPermission();
         if (readCalendarAuthorized) {
