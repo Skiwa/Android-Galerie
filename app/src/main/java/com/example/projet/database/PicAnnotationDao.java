@@ -1,5 +1,7 @@
 package com.example.projet.database;
 
+import android.net.Uri;
+
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -25,5 +27,13 @@ public interface PicAnnotationDao {
     @Transaction
     @Query("SELECT * from event_annotation")
     List<PicAnnotation> loadAnnotations(); //LiveData permet d'observer le changement en direct
+
+    @Transaction
+    @Query("SELECT * FROM event_annotation")
+    LiveData<List<EventAnnotation>> loadEventAnnotations();
+
+    /*@Transaction
+    @Query("SELECT * FROM event_annotation WHERE picUri=:picUri")
+    LiveData<Integer> selectEventAnnotationExist(Uri picUri);*/
 
 }
