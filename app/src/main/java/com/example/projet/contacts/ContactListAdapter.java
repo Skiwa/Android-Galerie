@@ -77,11 +77,11 @@ public class ContactListAdapter extends BaseAdapter implements ListAdapter {
         }
 
         //Fixe les noms des contacts
-        TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
+        TextView listItemText = view.findViewById(R.id.list_item_string);
         listItemText.setText(list.get(position));
 
         //Gère les évènements à la suppression
-        Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
+        Button deleteBtn = view.findViewById(R.id.delete_btn);
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

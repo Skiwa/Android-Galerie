@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        if(intent.ACTION_SEND.equals(action) && type != null){
+        if(Intent.ACTION_SEND.equals(action) && type != null){
             //-Récupère l'uri
-            Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
             this.selectedImageUri = imageUri;
             //-Navigue vers l'onglet annotations
             navView.setSelectedItemId(R.id.annotations);

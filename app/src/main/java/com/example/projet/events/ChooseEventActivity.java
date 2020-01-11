@@ -117,16 +117,12 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CALENDARS: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    readCalendarAuthorized=true;
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    readCalendarAuthorized=false;
-                }
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+                readCalendarAuthorized= grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 return;
             }
         }
