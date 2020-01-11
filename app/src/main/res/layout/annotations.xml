@@ -9,10 +9,10 @@
         android:id="@+id/selected_image_preview"
         android:layout_width="178dp"
         android:layout_height="158dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:background="#571717"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />

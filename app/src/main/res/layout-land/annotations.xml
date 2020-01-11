@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/selected_image_preview"
+        android:layout_width="178dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="16dp"
+        android:background="#571717"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.100000024"
+        tools:layout_editor_absoluteX="44dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ListView
+        android:id="@+id/selected_contacts"
+        android:layout_width="335dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/selected_image_preview"
+        tools:layout_editor_absoluteX="20dp">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/choose_contacts"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Choisir des contacts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_img" />
+
+    <TextView
+        android:id="@+id/selected_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/selected_event_label"
+        app:layout_constraintStart_toEndOf="@+id/selected_event_label" />
+
+    <Button
+        android:id="@+id/choose_event"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Choisir un évènement"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_contacts" />
+
+    <TextView
+        android:id="@+id/selected_contacts_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="Contacts choisis :"
+        app:layout_constraintBottom_toTopOf="@+id/selected_contacts"
+        app:layout_constraintStart_toStartOf="@+id/selected_contacts"
+        app:layout_constraintTop_toBottomOf="@+id/selected_image_preview" />
+
+    <Button
+        android:id="@+id/save_annotation"
+        android:layout_width="215dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Enregistrer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/choose_event" />
+
+    <TextView
+        android:id="@+id/selected_event_label"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="Evènement choisi :"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/choose_img"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Choisir une image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
