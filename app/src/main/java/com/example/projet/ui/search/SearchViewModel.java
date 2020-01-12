@@ -59,7 +59,6 @@ public class SearchViewModel extends AndroidViewModel {
         }
         if(contact.size() !=0 && getEventUri().getValue() != null)
         {
-            Log.i("Search", "On est dans la recherche d'event et de contact simultanée");
             for(int i=0; i< contact.size(); i++) {
                 LiveData<PicAnnotation> test = myRepository.getPicAnnotationEventContact(contact.get(i), getEventUri().getValue());
                 Log.i("Search", "Contact et événement : " + test);
