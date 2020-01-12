@@ -46,19 +46,16 @@ public interface PicAnnotationDao {
     @Query("SELECT * from event_annotation")
     List<PicAnnotation> loadAnnotations();
 
-//    @Query("SELECT * from event_annotation")
-//    LiveData<List<EventAnnotation>> loadEventAnnotations();
+    @Transaction
+    @Query("SELECT DISTINCT picUri FROM event_annotation WHERE eventUri=:eventUri")
+    List<PicAnnotation> getPicEvent(Uri eventUri);
 
-//    @Transaction
-//    @Query("SELECT * FROM event_annotation WHERE eventUri=:eventUri")
-//    List<PicAnnotation> getPicEvent(Uri eventUri);
+    @Transaction
+    @Query("SELECT DISTINCT picUri FROM contact_annotation WHERE contactUri=:contactUri")
+    List<PicAnnotation> getPicUri(Uri contactUri);
 
-//    @Transaction
-//    @Query("SELECT picUri FROM event_annotation WHERE eventUri=:eventUri")
-//    LiveData<PicAnnotation> getPicAnnotationEvent(Uri eventUri);
-//
-//    @Transaction
-//    @Query("SELECT * FROM event_annotation, contact_annotation WHERE event_annotation.eventUri=:eventUri AND contact_annotation.contactUri=:contactUri")
-//    LiveData<PicAnnotation> getPicAnnotationEventContact(Uri eventUri, Uri contactUri);
+    @Transaction
+    @Query("SELECT DISTINCT contact_annotation.picUri FROM event_annotation, contact_annotation WHERE event_annotation.eventUri=:eventUri AND contact_annotation.contactUri=:contactUri")
+    List<PicAnnotation> getPicEventContact(Uri eventUri,Uri contactUri);
 
 }

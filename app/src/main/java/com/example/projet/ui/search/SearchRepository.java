@@ -27,17 +27,11 @@ public class SearchRepository {
         picAnnotationDao = db.getPicAnnotationDao();
     }
 
-    //public LiveData<List<EventAnnotation>> getAllEventAnnotations() {return myAllEvent;}
-
     public List<PicAnnotation> getAllAnnotation() {return picAnnotationDao.loadAnnotations();}
 
-    //public List<EventAnnotation> getAllEventAnnotations() { return  picAnnotationDao.myEventAnnotation();}
+    public List<PicAnnotation> checkEventExist(Uri event){ return picAnnotationDao.getPicEvent(event);}
 
-    //public LiveData<PicAnnotation> checkEventAnnotationExist(Uri event){return picAnnotationDao.getPicAnnotationContact(event);}
+    public List<PicAnnotation> checkContactExist(Uri contactUri){ return picAnnotationDao.getPicUri(contactUri);}
 
-    //public List<PicAnnotation> checkEventExist(Uri event){ return picAnnotationDao.getPicEvent(event);}
-
-    //public LiveData<PicAnnotation> checkContactAnnotationExist(Uri contact){return picAnnotationDao.getPicAnnotationEvent(contact);}
-
-    //public LiveData<PicAnnotation> getPicAnnotationEventContact(Uri contact, Uri event) {return picAnnotationDao.getPicAnnotationEventContact(contact, event);}
+    public List<PicAnnotation> checkContactEventExist(Uri eventUri,Uri contactUri){ return picAnnotationDao.getPicEventContact(eventUri, contactUri);}
 }
