@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +38,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.home, container, false);
 
         homePicturesPreviews = root.findViewById(R.id.homePicturesPreviews);
-        homePicturesPreviews.setLayoutManager(new LinearLayoutManager(getContext()));
+        homePicturesPreviews.setLayoutManager(new GridLayoutManager(getContext(), 3));
         AnnotationDatabase.databaseWriteExecutor.execute(() -> {
 
             AnnotationDatabase db = AnnotationDatabase.getDatabase(getActivity().getApplication());
