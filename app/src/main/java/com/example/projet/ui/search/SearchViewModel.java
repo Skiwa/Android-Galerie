@@ -32,44 +32,56 @@ public class SearchViewModel extends AndroidViewModel {
         mText.setValue("This is search fragment");
     }
 
-    public void search(ArrayList<Uri> contact){
+    public ArrayList<Uri> search(ArrayList<Uri> contact, Uri event){
+
+        ArrayList<Uri> list = new ArrayList<Uri>();
 
         //Fonction de recherche Event seul;
-        if(contact.size() == 0 && getEventUri().getValue() != null)
+        if(contact.size() == 0 && event != null)
         {
+            Log.i("Search", "On est dans la recherche d'event seul");
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
-                    List<PicAnnotation> special = myRepository.checkEventExist(getEventUri().getValue());
-                Log.i("Search", "Le special : " + special );
+                    List<PicAnnotation> special = myRepository.checkEventExist(event);
+                    for(int i = 0;i<special.size();i++){
+                        list.add(special.get(i).getPicUri());
+                    }
                 });
         }
-        if(contact.size() !=0 && getEventUri().getValue() == null)
+        else if(contact.size() !=0 && event == null)
         {
             Log.i("Search", "On est dans la recherche de contact seul");
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
                 for(int i=0; i< contact.size(); i++) {
                     List<PicAnnotation> special = myRepository.checkContactExist(contact.get(i));
-                    Log.i("Search", "Le special : " + special );
+                    for(int j = 0;j<special.size();j++){
+                        list.add(special.get(j).getPicUri());
+                    }
+                    Log.i("Search", "Le special 2 : " + special );
                 }
             });
         }
-        if(contact.size() !=0 && getEventUri().getValue() != null)
-        {
+        else {
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
                 for(int i=0; i< contact.size(); i++) {
-                    List<PicAnnotation> special = myRepository.checkContactEventExist(getEventUri().getValue(),contact.get(i));
+                    List<PicAnnotation> special = myRepository.checkContactEventExist(event,contact.get(i));
+                    for(int j = 0;j<special.size();j++){
+                        list.add(special.get(j).getPicUri());
+                    }
                     Log.i("Search", "Le special dans contact et Event: " + special );
                 }
             });
         }
+
+        return list;
     }
 
     public LiveData<String> getText() {
         return mText;
     }
 
-    private MutableLiveData<Uri> getEventUri() { return EventUri;}
+    //private MutableLiveData<Uri> getEventUri() { return EventUri;}
 
     //Setter de Event Uri
-    public void setEventUri(Uri eventUri){EventUri.setValue(eventUri);}
+    //public void setEventUri(Uri eventUri){EventUri.setValue(eventUri);}
 }
 

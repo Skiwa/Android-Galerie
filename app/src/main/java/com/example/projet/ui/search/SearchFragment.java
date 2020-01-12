@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +19,19 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projet.R;
 import com.example.projet.contacts.ContactListAdapter;
 import com.example.projet.contacts.RemoveContactListener;
 import com.example.projet.events.ChooseEventActivity;
+import com.example.projet.ui.HomePicturesPreviewsAdapter;
+import com.example.projet.ui.SearchPicturesPreviewsAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,6 +41,7 @@ public class SearchFragment extends Fragment {
     private static int RESULT_CHOOSE_EVENT = 2;
 
     private SearchViewModel searchViewModel;
+    private Uri event;
     private ArrayList<Uri> contacts = new ArrayList<>();
     private ArrayList<String> contactsNames = new ArrayList<>();
     private ContactListAdapter contactsListAdapter;
@@ -49,6 +56,10 @@ public class SearchFragment extends Fragment {
     private TextView selectedEvent;
     private boolean hasSelectedContacts = false;
     private boolean hasSelectedEvent = false;
+
+
+    private RecyclerView searchPicturesPreviews;
+    private SearchPicturesPreviewsAdapter searchPicturesPreviewsAdapter;
 
     /**
      * Création de la vue du fragment
@@ -79,6 +90,9 @@ public class SearchFragment extends Fragment {
         selectedContactsLabel.setVisibility(View.GONE);
         contactsListView.setVisibility(View.GONE);
 
+        searchPicturesPreviews = root.findViewById(R.id.searchPicturesPreviews);
+        searchPicturesPreviews.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
 
         //Selectionner un contact
         buttonChooseContacts.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +116,11 @@ public class SearchFragment extends Fragment {
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                searchViewModel.search(contacts);
+                List<Uri> list = searchViewModel.search(contacts, event);
+
+                searchPicturesPreviewsAdapter = new SearchPicturesPreviewsAdapter(list, getContext());
+                searchPicturesPreviews.setAdapter(searchPicturesPreviewsAdapter);
+                searchPicturesPreviewsAdapter.notifyDataSetChanged();
             }
         });
 
@@ -191,8 +209,8 @@ public class SearchFragment extends Fragment {
             String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, uriEvent);
             Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, uriEvent)));
             String eventDate = _eventDate.toLocaleString().substring(0,_eventDate.toLocaleString().length()-9);
-            searchViewModel.setEventUri(uriEvent);
-
+            //searchViewModel.setEventUri(uriEvent);
+            event = uriEvent;
             selectedEvent.setText(eventTitle + " (" + eventDate+")");
         }
 
