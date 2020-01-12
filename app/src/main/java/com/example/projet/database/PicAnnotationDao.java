@@ -15,25 +15,49 @@ import com.example.projet.model.*;
 @Dao
 public interface PicAnnotationDao {
 
+    //<------INSERT------>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertPictureEvent(EventAnnotation a);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertPictureContact(ContactAnnotation a);
 
+    //<------DELETE------>
+
     @Query("DELETE FROM event_annotation")
     void deleteAll();
 
-    @Transaction
-    @Query("SELECT * from event_annotation")
-    List<PicAnnotation> loadAnnotations(); //LiveData permet d'observer le changement en direct
+    @Query("DELETE FROM contact_annotation")
+    void deleteAllContactAnnot();
 
-    @Transaction
+    @Query("DELETE FROM event_annotation WHERE picUri=:picUri")
+    void deletePicEventAnnotation(Uri picUri);
+
+    @Query("DELETE FROM contact_annotation WHERE picUri=:picUri")
+    void deletePicContactAnnot(Uri picUri);
+
+    @Query("DELETE FROM contact_annotation WHERE picUri=:picUri AND contactUri=:contactUri")
+    void deleteContactAnnotation(Uri picUri, Uri contactUri);
+
+    //<------GET------>
+
+    @Query("SELECT * from event_annotation")
+    List<PicAnnotation> loadAnnotations();
+
     @Query("SELECT * FROM event_annotation")
     LiveData<List<EventAnnotation>> loadEventAnnotations();
 
-    /*@Transaction
-    @Query("SELECT * FROM event_annotation WHERE picUri=:picUri")
-    LiveData<Integer> selectEventAnnotationExist(Uri picUri);*/
+    @Transaction
+    @Query("SELECT * FROM contact_annotation WHERE contactUri=:contactUri")
+    LiveData<PicAnnotation> getPicAnnotationContact(Uri contactUri);
+
+    @Transaction
+    @Query("SELECT picUri FROM event_annotation WHERE eventUri=:eventUri")
+    LiveData<PicAnnotation> getPicAnnotationEvent(Uri eventUri);
+
+    @Transaction
+    @Query("SELECT * FROM event_annotation, contact_annotation WHERE event_annotation.eventUri=:eventUri AND contact_annotation.contactUri=:contactUri")
+    LiveData<PicAnnotation> getPicAnnotationEventContact(Uri eventUri, Uri contactUri);
 
 }

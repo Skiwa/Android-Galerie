@@ -14,10 +14,10 @@ import java.util.List;
 
 public class SearchRepository {
 
-    private PicAnnotationDao picAnnotationDao;
-    private LiveData<List<EventAnnotation>> myAllEvent;
-    private LiveData<List<ContactAnnotation>> myAllContactAnnotations;
-    private LiveData<Integer> countEventAnnotation;
+    public PicAnnotationDao picAnnotationDao;
+    public LiveData<List<EventAnnotation>> myAllEvent;
+    public LiveData<List<ContactAnnotation>> myAllContactAnnotations;
+    public LiveData<Integer> countEventAnnotation;
 
     public SearchRepository(Application application){
         AnnotationDatabase db = AnnotationDatabase.getDatabase(application);
@@ -29,7 +29,9 @@ public class SearchRepository {
 
     public LiveData<List<EventAnnotation>> getAllEventAnnotations() {return myAllEvent;}
 
-    //public LiveData<Integer> checkEventAnnotationExist(Uri event){return picAnnotationDao.selectEventAnnotationExist(event);}
+    public LiveData<PicAnnotation> checkEventAnnotationExist(Uri event){return picAnnotationDao.getPicAnnotationContact(event);}
 
+    public LiveData<PicAnnotation> checkContactAnnotationExist(Uri contact){return picAnnotationDao.getPicAnnotationEvent(contact);}
 
+    public LiveData<PicAnnotation> getPicAnnotationEventContact(Uri contact, Uri event) {return picAnnotationDao.getPicAnnotationEventContact(contact, event);}
 }

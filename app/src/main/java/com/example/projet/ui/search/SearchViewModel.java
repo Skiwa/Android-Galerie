@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.projet.database.AnnotationDatabase;
 import com.example.projet.database.PicAnnotationDao;
 import com.example.projet.model.EventAnnotation;
+import com.example.projet.model.PicAnnotation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +44,26 @@ public class SearchViewModel extends AndroidViewModel {
         if(contact.size() == 0 && getEventUri().getValue() != null)
         {
             Log.i("Search", "On est dans la recherche d'event seul");
-            //LiveData<Integer> test = myRepository.checkEventAnnotationExist(getEventUri().getValue());
-            //Log.i("Search", "On est dans la recherche d'event seul" + test.toString());
+            LiveData<PicAnnotation> test = myRepository.checkEventAnnotationExist(getEventUri().getValue());
+            Log.i("Search", "On est dans la recherche d'event seul : " + test);
             Log.i("Search", "test");
             //Recherche
         }
         if(contact.size() !=0 && getEventUri().getValue() == null)
         {
             Log.i("Search", "On est dans la recherche de contact seul");
+            for(int i=0; i< contact.size(); i++) {
+                LiveData<PicAnnotation> test = myRepository.checkContactAnnotationExist(contact.get(i));
+                Log.i("Search", "les photos dans lesquel "+ contact.get(i) + " apparait sont : " + test);
+            }
         }
         if(contact.size() !=0 && getEventUri().getValue() != null)
         {
             Log.i("Search", "On est dans la recherche d'event et de contact simultanée");
+            for(int i=0; i< contact.size(); i++) {
+                LiveData<PicAnnotation> test = myRepository.getPicAnnotationEventContact(contact.get(i), getEventUri().getValue());
+                Log.i("Search", "Contact et événement : " + test);
+            }
         }
     }
 
