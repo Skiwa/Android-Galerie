@@ -93,6 +93,13 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchViewModel.search(contacts);
+            }
+        });
+
         //Listing des contacts
         contactsListAdapter = new ContactListAdapter(new ArrayList<String>(),getActivity());
         contactsListView.setAdapter(contactsListAdapter);
@@ -153,6 +160,7 @@ public class SearchFragment extends Fragment {
             String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, uriEvent);
             Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, uriEvent)));
             String eventDate = _eventDate.toLocaleString().substring(0,_eventDate.toLocaleString().length()-9);
+            searchViewModel.setEventUri(uriEvent);
 
             selectedEvent.setText(eventTitle + " (" + eventDate+")");
         }
