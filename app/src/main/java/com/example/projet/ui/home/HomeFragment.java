@@ -45,12 +45,12 @@ public class HomeFragment extends Fragment {
 
 
             List<PicAnnotation> res = dao.loadAnnotations();
-            final ArrayList<PicAnnotation> list = new ArrayList<PicAnnotation>();
-            for (PicAnnotation a : res) {
-                list.add(a);
-            }
+//            final ArrayList<PicAnnotation> list = new ArrayList<PicAnnotation>();
+//            for (PicAnnotation a : res) {
+//                list.add(a);
+//            }
 
-            homePicturesPreviewsAdapter = new HomePicturesPreviewsAdapter(list, getContext());
+            homePicturesPreviewsAdapter = new HomePicturesPreviewsAdapter(res, getContext());
             homePicturesPreviews.setAdapter(homePicturesPreviewsAdapter);
 
 

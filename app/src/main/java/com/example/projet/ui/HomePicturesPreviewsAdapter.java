@@ -20,9 +20,9 @@ public class HomePicturesPreviewsAdapter extends RecyclerView.Adapter<HomePictur
 
     private LayoutInflater inflater;
     private Context context;
-    private ArrayList<PicAnnotation> list = new ArrayList<PicAnnotation>();
+    private List<PicAnnotation> list = new ArrayList<PicAnnotation>();
 
-    public HomePicturesPreviewsAdapter(ArrayList list,Context context) {
+    public HomePicturesPreviewsAdapter(List list,Context context) {
         this.inflater = LayoutInflater.from(context);
         this.context = context;
         this.list=list;

@@ -15,23 +15,29 @@ import java.util.List;
 public class SearchRepository {
 
     public PicAnnotationDao picAnnotationDao;
-    public LiveData<List<EventAnnotation>> myAllEvent;
-    public LiveData<List<ContactAnnotation>> myAllContactAnnotations;
-    public LiveData<Integer> countEventAnnotation;
+    //public LiveData<List<EventAnnotation>> myEventAnnotation;
+    public List<EventAnnotation> myEventAnnotation;
+    public List<PicAnnotation> myEvent;
+    //public LiveData<List<PicAnnotation>> myEvent;
+    //public LiveData<List<ContactAnnotation>> myAllContactAnnotations;
+    //public LiveData<Integer> countEventAnnotation;
 
     public SearchRepository(Application application){
         AnnotationDatabase db = AnnotationDatabase.getDatabase(application);
         picAnnotationDao = db.getPicAnnotationDao();
-
-        myAllEvent = picAnnotationDao.loadEventAnnotations();
-        //List<PicAnnotation> res = dao.loadAnnotations();
     }
 
-    public LiveData<List<EventAnnotation>> getAllEventAnnotations() {return myAllEvent;}
+    //public LiveData<List<EventAnnotation>> getAllEventAnnotations() {return myAllEvent;}
 
-    public LiveData<PicAnnotation> checkEventAnnotationExist(Uri event){return picAnnotationDao.getPicAnnotationContact(event);}
+    public List<PicAnnotation> getAllAnnotation() {return picAnnotationDao.loadAnnotations();}
 
-    public LiveData<PicAnnotation> checkContactAnnotationExist(Uri contact){return picAnnotationDao.getPicAnnotationEvent(contact);}
+    //public List<EventAnnotation> getAllEventAnnotations() { return  picAnnotationDao.myEventAnnotation();}
 
-    public LiveData<PicAnnotation> getPicAnnotationEventContact(Uri contact, Uri event) {return picAnnotationDao.getPicAnnotationEventContact(contact, event);}
+    //public LiveData<PicAnnotation> checkEventAnnotationExist(Uri event){return picAnnotationDao.getPicAnnotationContact(event);}
+
+    //public List<PicAnnotation> checkEventExist(Uri event){ return picAnnotationDao.getPicEvent(event);}
+
+    //public LiveData<PicAnnotation> checkContactAnnotationExist(Uri contact){return picAnnotationDao.getPicAnnotationEvent(contact);}
+
+    //public LiveData<PicAnnotation> getPicAnnotationEventContact(Uri contact, Uri event) {return picAnnotationDao.getPicAnnotationEventContact(contact, event);}
 }
