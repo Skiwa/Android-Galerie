@@ -37,7 +37,7 @@ public interface PicAnnotationDao {
     @Query("DELETE FROM contact_annotation WHERE picUri=:picUri")
     void deletePicContactAnnot(Uri picUri);
 
-    @Query("DELETE FROM contact_annotation WHERE picUri=:picUri AND contactUri=:contactUri")
+    @Query("DELETE FROM contact_annotation WHERE picUri=:picUri OR contactUri=:contactUri")
     void deleteContactAnnotation(Uri picUri, Uri contactUri);
 
     //<------GET------>
@@ -46,14 +46,17 @@ public interface PicAnnotationDao {
     @Query("SELECT * from event_annotation")
     List<PicAnnotation> loadAnnotations();
 
+    //Get the PicUri for a eventUri
     @Transaction
     @Query("SELECT DISTINCT picUri FROM event_annotation WHERE eventUri=:eventUri")
     List<PicAnnotation> getPicEvent(Uri eventUri);
 
+    //Get the PicUri for a contactUri
     @Transaction
     @Query("SELECT DISTINCT picUri FROM contact_annotation WHERE contactUri=:contactUri")
     List<PicAnnotation> getPicUri(Uri contactUri);
 
+    //Get the PicUri for a eventUri or a contactUri
     @Transaction
     @Query("SELECT DISTINCT contact_annotation.picUri FROM event_annotation, contact_annotation WHERE event_annotation.eventUri=:eventUri AND contact_annotation.contactUri=:contactUri")
     List<PicAnnotation> getPicEventContact(Uri eventUri,Uri contactUri);
