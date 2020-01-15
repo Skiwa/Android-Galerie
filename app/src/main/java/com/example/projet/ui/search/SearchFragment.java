@@ -69,11 +69,10 @@ public class SearchFragment extends Fragment {
      * @return
      */
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        //Crée la vue
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.search, container, false);
 
-        //Récupère les éléments
+        /**Récupère les éléments**/
         selectedContactsLabel = root.findViewById(R.id.selected_contacts_label);
         contactsListView = root.findViewById(R.id.selected_contacts);
         buttonChooseContacts = root.findViewById(R.id.choose_contacts);
@@ -84,7 +83,7 @@ public class SearchFragment extends Fragment {
         hideSearchButton = root.findViewById(R.id.hideSearchButton);
         showSearchButton = root.findViewById(R.id.showSearchButton);
 
-        //Cache les élements qui doivent l'être
+        /**Cache les élements qui doivent l'être**/
         selectedEventLabel.setVisibility(View.GONE);
         selectedEvent.setVisibility(View.GONE);
         selectedContactsLabel.setVisibility(View.GONE);
@@ -94,7 +93,9 @@ public class SearchFragment extends Fragment {
         searchPicturesPreviews.setLayoutManager(new GridLayoutManager(getContext(), 3));
 
 
-        //Selectionner un contact
+        /**Selectionner un contact
+         *
+         */
         buttonChooseContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -104,7 +105,9 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        //Séléctionner un event
+        /**Séléctionner un event
+         *
+         */
         buttonChooseEvent.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v){
@@ -113,6 +116,9 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        /**Recherche
+         *
+         */
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -124,21 +130,20 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        //Listing des contacts
+        /**Listing des contacts**/
         contactsListAdapter = new ContactListAdapter(new ArrayList<String>(),getActivity());
         contactsListView.setAdapter(contactsListAdapter);
 
-        //Evenement lors de la suppression d'un contact
+        /**Evenement lors de la suppression d'un contact**/
         contactsListAdapter.addRemoveContactListener(new RemoveContactListener() {
             @Override
             public void deleteContact(int position) {
-                //Supprime le contact de la liste
                 contacts.remove(position);
             }
         });
 
 
-        //Retractation du volet de recherche
+        /**Retractation du volet de recherche**/
         hideSearchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View arg0){
@@ -150,13 +155,12 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        //Affichage du volet de recherche
+        /**Affichage du volet de recherche**/
         showSearchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View arg0){
                 ConstraintLayout searchPanel = root.findViewById(R.id.searchPanel);
                 searchPanel.setVisibility(View.VISIBLE);
-
                 showSearchButton.setVisibility(View.GONE);
 
             }
@@ -176,27 +180,21 @@ public class SearchFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Selection d'un contact
+        /**Selection d'un contact**/
         if (requestCode == RESULT_CHOOSE_CONTACT && resultCode == RESULT_OK && null != data) {
-
-            //Fait apparaitre les éléments
             if(!hasSelectedContacts){
                 hasSelectedContacts = true;
                 selectedContactsLabel.setVisibility(View.VISIBLE);
                 contactsListView.setVisibility(View.VISIBLE);
             }
 
-            //Ajoute le contact recupéré à la liste
+            /**Ajoute le contact recupéré à la liste et l'affiche**/
             contacts.add(data.getData());
-
-            //Met à jour graphiquement la liste des contacts
             this.updateSelectedContacts();
         }
 
-        //Selection d'un event
+        /**Selection d'un event**/
         if (requestCode == RESULT_CHOOSE_EVENT && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            //Fait apparaitre les éléments
             if(!hasSelectedEvent){
                 hasSelectedEvent = true;
                 selectedEventLabel.setVisibility(View.VISIBLE);
@@ -205,16 +203,13 @@ public class SearchFragment extends Fragment {
 
             Uri uriEvent = data.getData();
 
-            //Récupère le titre et la date formatée
+            /**Récupère le titre et la date formatée**/
             String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, uriEvent);
             Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, uriEvent)));
             String eventDate = _eventDate.toLocaleString().substring(0,_eventDate.toLocaleString().length()-9);
-            //searchViewModel.setEventUri(uriEvent);
             event = uriEvent;
             selectedEvent.setText(eventTitle + " (" + eventDate+")");
         }
-
-
     }
 
     /**
@@ -233,18 +228,17 @@ public class SearchFragment extends Fragment {
         return "";
     }
 
-    //TODO: isoler ça dans une classe
     /**
      * Mise à jour des contacts selectionnés
      */
     private void updateSelectedContacts(){
-        //-Transforme les contacts en string
+        /**Transforme les contacts en string**/
         this.contactsNames.clear();
         for(int i = 0; i<this.contacts.size(); i++){
             this.contactsNames.add(getFieldFromUri(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, contacts.get(i)));
         }
 
-        //-Met à jour la liste
+        /**Met à jour la liste**/
         contactsListAdapter.setList(contactsNames);
         contactsListAdapter.notifyDataSetChanged();
     }

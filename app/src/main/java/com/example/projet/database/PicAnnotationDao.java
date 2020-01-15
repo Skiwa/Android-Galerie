@@ -56,6 +56,11 @@ public interface PicAnnotationDao {
     @Query("SELECT DISTINCT picUri FROM contact_annotation WHERE contactUri=:contactUri")
     List<PicAnnotation> getPicUri(Uri contactUri);
 
+    //Get the PicUri for multiple contact
+    @Transaction
+    @Query("SELECT DISTINCT picUri FROM contact_annotation AS ca WHERE ca.contactUri IN(:contactUri)")
+    List<PicAnnotation> getPicMultipleContact(List<Uri> contactUri);
+
     //Get the PicUri for a eventUri or a contactUri
     @Transaction
     @Query("SELECT DISTINCT contact_annotation.picUri FROM event_annotation, contact_annotation WHERE event_annotation.eventUri=:eventUri AND contact_annotation.contactUri=:contactUri")

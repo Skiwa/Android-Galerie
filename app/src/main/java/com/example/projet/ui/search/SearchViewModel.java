@@ -25,12 +25,17 @@ public class SearchViewModel extends AndroidViewModel {
         myRepository = new SearchRepository(application);
     }
 
-    //Get the Pics Uri from an event or a contact or both
+    /**Recherche les photos contenant un événement ou des contacts
+     *
+     * @param contact
+     * @param event
+     * @return
+     */
     public ArrayList<Uri> search(ArrayList<Uri> contact, Uri event){
 
         ArrayList<Uri> list = new ArrayList<Uri>();
 
-        //Check if the Data send is only an event
+        /**Check if the Data send is only an event*/
         if(contact.size() == 0 && event != null)
         {
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
@@ -40,19 +45,31 @@ public class SearchViewModel extends AndroidViewModel {
                     }
                 });
         }
-        //Check if the Data send is only a contact
-        else if(contact.size() !=0 && event == null)
+        /**Check if the Data send is only a contact*/
+        else if(contact.size() ==1 && event == null)
         {
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
                 for(int i=0; i< contact.size(); i++) {
                     List<PicAnnotation> special = myRepository.checkContactExist(contact.get(i));
+
                     for(int j = 0;j<special.size();j++){
                         list.add(special.get(j).getPicUri());
                     }
                 }
             });
         }
-        //Check if the Data send is an event and a contact
+
+        /**Check if the Data send is only a contact*/
+        else if(contact.size() > 1 && event == null)
+        {
+            AnnotationDatabase.databaseWriteExecutor.execute(() -> {
+                    List<PicAnnotation> special = myRepository.checkTwoContactExist(contact);
+                for(int j = 0;j<special.size();j++){
+                    list.add(special.get(j).getPicUri());
+                }
+            });
+        }
+        /**Check if the Data send is an event and a contact*/
         else {
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
                 for(int i=0; i< contact.size(); i++) {

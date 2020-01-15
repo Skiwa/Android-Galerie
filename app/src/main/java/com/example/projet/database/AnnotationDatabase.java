@@ -14,21 +14,17 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.projet.model.*;
 
-//Pas oublier de modifier la version en cas de modification de la Db
 @Database(entities={EventAnnotation.class, ContactAnnotation.class}, version=4, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AnnotationDatabase extends RoomDatabase {
 
-    //Utilise le DAO présent dans PicAnnotationDao
     public abstract PicAnnotationDao getPicAnnotationDao();
 
-    //Singleton to prevent having multiple instances
     private static volatile AnnotationDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     public static final ExecutorService databaseWriteExecutor =
         Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    //Crée une database du nom annotation_database
     public static AnnotationDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AnnotationDatabase.class) {

@@ -16,12 +16,15 @@ public class SearchRepository {
 
     public List<PicAnnotation> getAllAnnotation() {return picAnnotationDao.loadAnnotations();}
 
-    //Get all the picUri for an event
+    /**Get all the picUri for an event**/
     public List<PicAnnotation> checkEventExist(Uri event){ return picAnnotationDao.getPicEvent(event);}
 
-    //Get all the picUri for a contact
+    /**Get all the PicUri containing two selected person*/
+    public List<PicAnnotation> checkTwoContactExist(List<Uri> contactUri) { return picAnnotationDao.getPicMultipleContact(contactUri);}
+
+    /**Get all the picUri for a contact*/
     public List<PicAnnotation> checkContactExist(Uri contactUri){ return picAnnotationDao.getPicUri(contactUri);}
 
-    //Get all the picUri for an event or a contact
+    /**Get all the picUri for an event or a contact*/
     public List<PicAnnotation> checkContactEventExist(Uri eventUri,Uri contactUri){ return picAnnotationDao.getPicEventContact(eventUri, contactUri);}
 }

@@ -49,7 +49,6 @@ public class SearchPicturesPreviewsAdapter extends RecyclerView.Adapter<SearchPi
     class SearchPicturesPreviewsViewHolder extends RecyclerView.ViewHolder
     {
         ImageView preview;
-        TextView text;
 
         public SearchPicturesPreviewsViewHolder(View itemView) {
             super(itemView);

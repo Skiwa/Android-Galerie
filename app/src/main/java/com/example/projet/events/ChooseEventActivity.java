@@ -60,37 +60,28 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
 
 
     }
-    // called when an event item has been selected and return the item URI
+
     @Override
     public boolean onItemActivated(@NonNull ItemDetailsLookup.ItemDetails<Long> item, @NonNull MotionEvent e) {
 
-        Log.v("ITEM SELECTED", "event id : "+ item.getSelectionKey());
-
         Uri selectedEvent = Uri.withAppendedPath(CalendarContract.Events.CONTENT_URI, item.getSelectionKey().toString());
-
-        //L'envoie des données à activity_main
-        //On met les données dans l'intent et on met fin à cette activité
         getIntent().setData(selectedEvent);
         this.setResult(Activity.RESULT_OK, getIntent());
         this.finish();
-
-        //Test lors du clic sur un élement on renvoie l'URI
-//        Toast.makeText(this,"event uri : "+ selectedEvent, Toast.LENGTH_LONG).show();
         return true;
     }
 
-    // called when an other day has been selected
     @Override
     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-
-//        Toast.makeText(this.getApplicationContext(), "Date : "+dayOfMonth+"/"+(month+1)+"/"+year, Toast.LENGTH_SHORT).show();
-
         checkCalendarReadPermission();
         if (readCalendarAuthorized) {
             adapter.setDate(year, month, dayOfMonth);
         }
     }
 
+    /**
+     * Check the Calender Permission
+     */
     public void checkCalendarReadPermission() {
         if (ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_CALENDAR)
@@ -116,17 +107,10 @@ public class ChooseEventActivity extends AppCompatActivity implements CalendarVi
                                            String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CALENDARS: {
-                // If request is cancelled, the result arrays are empty.
-                // permission was granted, yay! Do the
-                // contacts-related task you need to do.
-                // permission denied, boo! Disable the
-                // functionality that depends on this permission.
                 readCalendarAuthorized= grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 return;
             }
         }
     }
-
-
 }

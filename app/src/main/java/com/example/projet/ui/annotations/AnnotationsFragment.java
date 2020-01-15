@@ -43,15 +43,12 @@ public class AnnotationsFragment extends Fragment {
     private static int RESULT_CHOOSE_CONTACT = 2;
     private static int RESULT_CHOOSE_EVENT = 3;
 
-    private PicAnnotation PicAnnotation;
     private AnnotationsViewModel annotationsViewModel;
-    private PicAnnotation mMainActivityModel;
     private ImageView selectedImagePreview;
     private TextView selectedContactsLabel;
     private TextView selectedEventLabel;
     private ArrayList<String> contactsNames = new ArrayList<>();
     private ContactListAdapter contactsListAdapter;
-    private Converters converters;
     private TextView selectedEvent;
     private ListView contactsListView;
     private Button buttonChooseImg;
@@ -76,12 +73,11 @@ public class AnnotationsFragment extends Fragment {
      * @return
      */
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        //Crée la vue
         annotationsViewModel = ViewModelProviders.of(this).get(AnnotationsViewModel.class);
 
         View root = inflater.inflate(R.layout.annotations, container, false);
 
-        //Récupère les élements
+        /** Selectionne les éléments*/
         selectedImagePreview = root.findViewById(R.id.selected_image_preview);
         selectedContactsLabel = root.findViewById(R.id.selected_contacts_label);
         contactsListView = root.findViewById(R.id.selected_contacts);
@@ -92,17 +88,17 @@ public class AnnotationsFragment extends Fragment {
         buttonChooseEvent = root.findViewById(R.id.choose_event);
         buttonSave = root.findViewById(R.id.save_annotation);
 
-        //Cache les élements qui doivent l'être
+        /**Cache les élements qui doivent l'être*/
         selectedImagePreview.setVisibility(View.GONE);
         selectedEventLabel.setVisibility(View.GONE);
         selectedEvent.setVisibility(View.GONE);
         selectedContactsLabel.setVisibility(View.GONE);
         contactsListView.setVisibility(View.GONE);
 
-        //Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie
+        /**Fixe l'uri de l'image à celle récupérée si on a ouvert l'appli depuis la galerie*/
         if(((MainActivity) getActivity()).getSelectedImageUri() != null){
 
-            //Fait apparaitre les éléments
+            /**Fait apparaitre les éléments*/
             if(!hasSelectedImage){
                 hasSelectedImage = true;
                 selectedImagePreview.setVisibility(View.VISIBLE);
@@ -111,7 +107,9 @@ public class AnnotationsFragment extends Fragment {
             selectedImagePreview.setImageURI(((MainActivity) getActivity()).getSelectedImageUri());
         }
 
-        //Séléctionner un event
+        /**Selectionner un event
+         *
+         */
         buttonChooseEvent.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v){
@@ -120,7 +118,9 @@ public class AnnotationsFragment extends Fragment {
             }
         });
 
-        //Selectionner une image
+        /**Selectionner une image
+         *
+         */
         buttonChooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -130,7 +130,9 @@ public class AnnotationsFragment extends Fragment {
 
         });
 
-        //Selectionner un contact
+        /**Selectionner un contact
+         *
+         */
         buttonChooseContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -140,7 +142,9 @@ public class AnnotationsFragment extends Fragment {
             }
         });
 
-        //Enregistrer une annotation
+        /**Enregistrer une annotation
+         *
+         */
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -148,15 +152,18 @@ public class AnnotationsFragment extends Fragment {
             }
         });
 
-        //Listing des contacts
+        /**Listing des contacts
+         *
+         */
         contactsListAdapter = new ContactListAdapter(new ArrayList<String>(),getActivity());
         contactsListView.setAdapter(contactsListAdapter);
 
-        //Evenement lors de la suppression d'un contact
+        /**Suppression d'un contact
+         *
+         */
         contactsListAdapter.addRemoveContactListener(new RemoveContactListener() {
             @Override
             public void deleteContact(int position) {
-                //Supprime le contact de la liste
                 contacts.remove(position);
             }
         });
@@ -173,40 +180,46 @@ public class AnnotationsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Selection d'une image
+        /**Selection d'une image
+         *
+         */
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            //Fait apparaitre les éléments
+            /**Fait apparaitre les éléments*/
             if(!hasSelectedImage){
                 hasSelectedImage = true;
                 selectedImagePreview.setVisibility(View.VISIBLE);
             }
 
-            //Fixe l'image avec l'uri récupérée
+            /**Fixe l'image avec l'uri récupérée*/
             imageURI = data.getData();
             selectedImagePreview.setImageURI(imageURI);
         }
 
-        //Selection d'un contact
+        /**Selection d'un contact
+         *
+         */
         if (requestCode == RESULT_CHOOSE_CONTACT && resultCode == RESULT_OK && null != data) {
 
-            //Fait apparaitre les éléments
+            /**Fait apparaitre les éléments*/
             if(!hasSelectedContacts){
                 hasSelectedContacts = true;
                 selectedContactsLabel.setVisibility(View.VISIBLE);
                 contactsListView.setVisibility(View.VISIBLE);
             }
 
-            //Ajoute le contact recupéré à la liste
+            /**Ajoute le contact recupéré à la liste*/
             contacts.add(data.getData());
 
-            //Met à jour graphiquement la liste des contacts
+            /**Met à jour graphiquement la liste des contacts*/
             this.updateSelectedContacts();
         }
 
-        //Selection d'un event
+        /**Selection d'un event
+         *
+         */
         if (requestCode == RESULT_CHOOSE_EVENT && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-            //Fait apparaitre les éléments
+            /**Fait apparaitre les éléments*/
             if(!hasSelectedEvent){
                 hasSelectedEvent = true;
                 selectedEventLabel.setVisibility(View.VISIBLE);
@@ -215,7 +228,7 @@ public class AnnotationsFragment extends Fragment {
 
             eventURI = data.getData();
 
-            //Récupère le titre et la date formatée
+            /**Récupère le titre et la date formatée*/
             String eventTitle = getFieldFromUri(CalendarContract.Events.TITLE, eventURI);
             Date _eventDate = new Date(Long.parseLong(getFieldFromUri(CalendarContract.Events.DTSTART, eventURI)));
             String eventDate = _eventDate.toLocaleString().substring(0,_eventDate.toLocaleString().length()-9);
@@ -228,18 +241,14 @@ public class AnnotationsFragment extends Fragment {
      * Mise à jour des contacts selectionnés
      */
     private void updateSelectedContacts(){
-        //-Transforme les contacts en string
         this.contactsNames.clear();
         for(int i = 0; i<this.contacts.size(); i++){
             this.contactsNames.add(getFieldFromUri(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, contacts.get(i)));
         }
 
-        //-Met à jour la liste
         contactsListAdapter.setList(contactsNames);
         contactsListAdapter.notifyDataSetChanged();
     }
-
-
 
     /**
      * Récupère un champs voulu pour une URI
@@ -257,27 +266,20 @@ public class AnnotationsFragment extends Fragment {
         return "";
     }
 
-
     /**
      * Enregistre l'annotation en BDD
      */
     private void saveAnnotation(Uri imageURI, Uri eventURI, ArrayList<Uri> contacts){
 
-        //Si toutes les Uri sont là
         if(imageURI != null && eventURI != null && contacts.size() != 0){
 
             AnnotationDatabase.databaseWriteExecutor.execute(() -> {
 
                 AnnotationDatabase db = AnnotationDatabase.getDatabase(getActivity().getApplication());
                 PicAnnotationDao dao = db.getPicAnnotationDao();
-
-                //A l'Event annotation on envoie l'URI de la photo et on retrouve l'URI stocké dans un textView
                 EventAnnotation annot = new EventAnnotation(imageURI, eventURI);
-                //ajout à la BD
                 dao.insertPictureEvent(annot);
 
-                //Au Contact annotation on envoie l'URI de la photo
-                //Récupérer les éléments de **Contacts** et les enlever de son tableau
                 for( int i=0; i<contacts.size(); i++) {
                     try {
                         ContactAnnotation ca = new ContactAnnotation(
@@ -290,14 +292,8 @@ public class AnnotationsFragment extends Fragment {
                     catch(Exception e){
                         e.printStackTrace();
                     }
-
                 }
             });
-
-
-            Toast.makeText(this.getContext(),"Annotation enregistrée.", Toast.LENGTH_LONG).show();
-
-            //Redirige vers l'onglet d'accueil
             ((MainActivity) this.getActivity()).navView.setSelectedItemId(R.id.home);
 
         }
